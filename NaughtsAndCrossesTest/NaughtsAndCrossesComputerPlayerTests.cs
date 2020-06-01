@@ -238,11 +238,11 @@ namespace NaughtsAndCrossesTest
         [TestCase('O', ' ', 'O',
                   'z', 'X', 'O',
                   'X', ' ', 'X', 'X')]
-        public void ReturnsArrayUnalteredIfPassedArrayContainsAnyElementsOtherThanX_O_OrSpace(char aa, char ab, char ac, char ba, char bb, char bc, char ca, char cb, char cc, char playerSymbol)
+        public void ThrowsAnExceptionIfPassedArrayContainsAnyElementsOtherThanX_O_OrSpace(char aa, char ab, char ac, char ba, char bb, char bc, char ca, char cb, char cc, char playerSymbol)
         //Tests that when making a move the computer player returns an array only containing valid elements
         {
             char[,] testGameState = new char[3, 3] { { aa, ab, ac }, { ba, bb, bc }, { ca, cb, cc } };
-            char[,] result = NaughtsAndCrosses.NaughtsAndCrossesComputerPlayer.PlayNextMove(testGameState, playerSymbol);
+            //char[,] result = NaughtsAndCrosses.NaughtsAndCrossesComputerPlayer.PlayNextMove(testGameState, playerSymbol);
 
             bool passedArrayContainsOnlyO_X_Space = true;
 
@@ -263,14 +263,7 @@ namespace NaughtsAndCrossesTest
             }
             else
             {
-                if (GameStatesAreEqual(result, testGameState))
-                {
-                    Assert.Pass();
-                }
-                else
-                {
-                    Assert.Fail();
-                }
+                Assert.Throws<ArgumentException>(() => NaughtsAndCrosses.NaughtsAndCrossesComputerPlayer.PlayNextMove(testGameState, playerSymbol));
             }
         }
 
@@ -346,9 +339,9 @@ namespace NaughtsAndCrossesTest
         }
 
 
-        [TestCase('X', new char[,] {{'X', ' ', ' '},
-                  {' ', ' ', ' '},
-                  {'X', ' ', ' '}}, TestName = "Test 1")]
+        [TestCase('X', ' ', ' ',
+                  ' ', ' ', ' ',
+                  'X', ' ', ' ', 'X')]
         [TestCase('O', ' ', ' ',
                   ' ', ' ', ' ',
                   'O', ' ', ' ', 'X')]
@@ -428,21 +421,12 @@ namespace NaughtsAndCrossesTest
         [TestCase('O', ' ', 'O',
                   'X', 'X', 'O',
                   'X', ' ', 'X', 'z')]
-        public void ReturnsArrayUnalteredIfSecondArgumentNotOOrX(char aa, char ab, char ac, char ba, char bb, char bc, char ca, char cb, char cc, char playerSymbol)
+        public void ThrowsAnExceptionIfSecondArgumentNotOOrX(char aa, char ab, char ac, char ba, char bb, char bc, char ca, char cb, char cc, char playerSymbol)
         {
             char[,] testGameState = new char[3, 3] { { aa, ab, ac }, { ba, bb, bc }, { ca, cb, cc } };
-            char[,] result;
-            result = NaughtsAndCrosses.NaughtsAndCrossesComputerPlayer.PlayNextMove(testGameState, playerSymbol);
             if (playerSymbol != 'X' && playerSymbol != 'O')
             {
-                if (GameStatesAreEqual(testGameState,result))
-                {
-                    Assert.Pass();
-                }
-                else
-                {
-                    Assert.Fail();
-                }
+                Assert.Throws<ArgumentException>(() => NaughtsAndCrosses.NaughtsAndCrossesComputerPlayer.PlayNextMove(testGameState, playerSymbol));
             }
             else
             {
