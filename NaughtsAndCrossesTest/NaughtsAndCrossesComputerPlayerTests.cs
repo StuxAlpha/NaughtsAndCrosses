@@ -238,12 +238,10 @@ namespace NaughtsAndCrossesTest
         [TestCase('O', ' ', 'O',
                   'z', 'X', 'O',
                   'X', ' ', 'X', 'X')]
-        public void ReturnsArrayUnalteredIfPassedArrayContainsAnyElementsOtherThanX_O_OrSpace(char aa, char ab, char ac, char ba, char bb, char bc, char ca, char cb, char cc, char playerSymbol)
+        public void ThrowsExceptionIfPassedArrayContainsAnyElementsOtherThanX_O_OrSpace(char aa, char ab, char ac, char ba, char bb, char bc, char ca, char cb, char cc, char playerSymbol)
         //Tests that when making a move the computer player returns an array only containing valid elements
         {
             char[,] testGameState = new char[3, 3] { { aa, ab, ac }, { ba, bb, bc }, { ca, cb, cc } };
-            char[,] result = NaughtsAndCrosses.NaughtsAndCrossesComputerPlayer.PlayNextMove(testGameState, playerSymbol);
-
             bool passedArrayContainsOnlyO_X_Space = true;
 
             for (int x = 0; x < 3; x++)
@@ -263,14 +261,7 @@ namespace NaughtsAndCrossesTest
             }
             else
             {
-                if (GameStatesAreEqual(result, testGameState))
-                {
-                    Assert.Pass();
-                }
-                else
-                {
-                    Assert.Fail();
-                }
+                Assert.Throws<ArgumentException>(() => NaughtsAndCrosses.NaughtsAndCrossesComputerPlayer.PlayNextMove(testGameState, playerSymbol));
             }
         }
 
@@ -345,53 +336,6 @@ namespace NaughtsAndCrossesTest
             }
         }
 
-
-        [TestCase('X', new char[,] {{'X', ' ', ' '},
-                  {' ', ' ', ' '},
-                  {'X', ' ', ' '}}, TestName = "Test 1")]
-        [TestCase('O', ' ', ' ',
-                  ' ', ' ', ' ',
-                  'O', ' ', ' ', 'X')]
-        [TestCase('X', ' ', ' ',
-                  ' ', ' ', ' ',
-                  'X', ' ', ' ', 'O')]
-        [TestCase('O', ' ', 'O',
-                  ' ', ' ', ' ',
-                  ' ', ' ', ' ', ' ')]
-        [TestCase('O', ' ', 'O',
-                  ' ', ' ', ' ',
-                  'X', ' ', 'X', '1')]
-        [TestCase('O', ' ', 'O',
-                  ' ', 'X', ' ',
-                  'X', ' ', 'O', 'X')]
-        [TestCase('O', ' ', 'O',
-                  ' ', ' ', ' ',
-                  'X', ' ', 'X', 'O')]
-        [TestCase('O', ' ', 'O',
-                  ' ', 'X', ' ',
-                  'X', ' ', 'O', '0')]
-        [TestCase('O', ' ', 'O',
-                  'X', 'X', 'O',
-                  'X', ' ', 'X', 'x')]
-        [TestCase('O', 'X', 'X',
-                  ' ', 'X', ' ',
-                  'O', 'O', 'X', 'y')]
-        [TestCase('O', 'X', 'X',
-                  ' ', 'X', ' ',
-                  'O', 'O', 'X', 'p')]
-        [TestCase('O', ' ', 'O',
-                  'X', 'X', 'O',
-                  'X', ' ', 'X', 'z')]
-        public void ReturnsArrayUnalteredIfPassedWrongSizeArray(char aa, char ab, char ac, char ba, char bb, char bc, char ca, char cb, char cc, char playerSymbol)
-        {
-            char[,] testGameState = new char[3, 3] { { aa, ab, ac }, { ba, bb, bc }, { ca, cb, cc } };
-            char[,] result;
-            result = NaughtsAndCrosses.NaughtsAndCrossesComputerPlayer.PlayNextMove(testGameState, playerSymbol);
-
-            Assert.Fail();
-
-        }
-
         [TestCase('X', ' ', ' ',
                   ' ', ' ', ' ',
                   'X', ' ', ' ', 'X')]
@@ -428,21 +372,13 @@ namespace NaughtsAndCrossesTest
         [TestCase('O', ' ', 'O',
                   'X', 'X', 'O',
                   'X', ' ', 'X', 'z')]
-        public void ReturnsArrayUnalteredIfSecondArgumentNotOOrX(char aa, char ab, char ac, char ba, char bb, char bc, char ca, char cb, char cc, char playerSymbol)
+        public void ThrowsExcpetionIfSecondArgumentNotOOrX(char aa, char ab, char ac, char ba, char bb, char bc, char ca, char cb, char cc, char playerSymbol)
         {
             char[,] testGameState = new char[3, 3] { { aa, ab, ac }, { ba, bb, bc }, { ca, cb, cc } };
-            char[,] result;
-            result = NaughtsAndCrosses.NaughtsAndCrossesComputerPlayer.PlayNextMove(testGameState, playerSymbol);
+
             if (playerSymbol != 'X' && playerSymbol != 'O')
             {
-                if (GameStatesAreEqual(testGameState,result))
-                {
-                    Assert.Pass();
-                }
-                else
-                {
-                    Assert.Fail();
-                }
+                Assert.Throws<ArgumentException>(() => NaughtsAndCrosses.NaughtsAndCrossesComputerPlayer.PlayNextMove(testGameState, playerSymbol));
             }
             else
             {
@@ -509,6 +445,8 @@ namespace NaughtsAndCrossesTest
                     Assert.Fail();
                 }
             }
+
+
 
             Assert.Fail();
         }
@@ -582,18 +520,18 @@ namespace NaughtsAndCrossesTest
         [TestCase('X', ' ', ' ',
                   ' ', ' ', ' ',
                   'X', ' ', ' ', 'O')]
-        [TestCase('O', ' ', 'O',
-                  ' ', ' ', ' ',
-                  ' ', ' ', ' ', 'O')]
+        [TestCase('O', 'X', 'O',
+                  'X', 'X', 'X',
+                  'O', 'X', 'O', 'O')]
         [TestCase('O', ' ', 'O',
                   ' ', ' ', ' ',
                   'X', ' ', 'X', 'X')]
         [TestCase('O', ' ', 'O',
                   ' ', 'X', ' ',
                   'X', ' ', 'O', 'X')]
-        [TestCase('O', ' ', 'O',
-                  ' ', ' ', ' ',
-                  'X', ' ', 'X', 'O')]
+        [TestCase('O', 'O', 'O',
+                  'X', 'O', 'X',
+                  'X', 'X', 'X', 'O')]
         [TestCase('O', ' ', 'O',
                   ' ', 'X', ' ',
                   'X', ' ', 'O', 'O')]
@@ -601,7 +539,7 @@ namespace NaughtsAndCrossesTest
                   'X', 'X', 'O',
                   'X', ' ', 'X', 'O')]
         [TestCase('O', 'X', 'X',
-                  ' ', 'X', ' ',
+                  'X', 'X', 'O',
                   'O', 'O', 'X', 'O')]
         [TestCase('O', 'X', 'X',
                   ' ', 'X', ' ',
@@ -615,7 +553,7 @@ namespace NaughtsAndCrossesTest
             char[,] result = NaughtsAndCrosses.NaughtsAndCrossesComputerPlayer.PlayNextMove(testGameState, playerSymbol);
             if(CountChar(testGameState, ' ') == 0)
             {
-                if(result == testGameState)
+                if(GameStatesAreEqual(testGameState,result))
                 {
                     Assert.Pass();
                 }
